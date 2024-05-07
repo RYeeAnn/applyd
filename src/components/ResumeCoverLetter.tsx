@@ -1,5 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function ResumeCoverLetter() {
   return (
@@ -15,9 +17,9 @@ function ResumeCoverLetter() {
                 This is a sample resume. You can view, edit, or delete it.
               </Card.Text>
                 <div className="mt-2"> {/* Add margin-top */}
-                    <Button variant="secondary" className="mr-2">View</Button> {/* Add margin-right */}
-                    <Button variant="info" className="mr-2">Edit</Button> {/* Add margin-right */}
-                    <Button variant="danger">Delete</Button>
+                    <Button variant="secondary" className="mr-2"><FontAwesomeIcon icon={faEye} /></Button> {/* Add margin-right */}
+                    <Button variant="info" className="mr-2"><FontAwesomeIcon icon={faEdit} /></Button> {/* Add margin-right */}
+                    <Button variant="danger"><FontAwesomeIcon icon={faTrash} /></Button>
                 </div>
             </Card.Body>
           </Card>
@@ -31,9 +33,9 @@ function ResumeCoverLetter() {
                 This is a sample cover letter. You can view, edit, or delete it.
             </Card.Text>
             <div className="mt-2"> {/* Add margin-top */}
-                <Button variant="secondary" className="mr-2">View</Button> {/* Add margin-right */}
-                <Button variant="info" className="mr-2">Edit</Button> {/* Add margin-right */}
-                <Button variant="danger">Delete</Button>
+                <Button variant="secondary" className="mr-2"><FontAwesomeIcon icon={faEye} /></Button> {/* Add margin-right */}
+                <Button variant="info" className="mr-2"><FontAwesomeIcon icon={faEdit} /></Button> {/* Add margin-right */}
+                <Button variant="danger"><FontAwesomeIcon icon={faTrash} /></Button>
             </div>
             </Card.Body>
         </Card>

@@ -13,6 +13,7 @@ interface JobApplication {
   company_name: string;
   position: string;
   status: string;
+  submitted_at: string;
 }
 
 function App() {
@@ -43,6 +44,9 @@ function App() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
+    // Get the current date and time
+    const submitted_at = new Date().toISOString();
+    
     // Check if any of the fields are empty
     if (!newApplication.company_name || !newApplication.position || !newApplication.status) {
       alert('Please fill in all fields before submitting.');
@@ -50,15 +54,24 @@ function App() {
     }
     
     try {
-      await axios.post('http://localhost:3002/api/jobApplications', newApplication);
+      // Include the submitted_at field in the newApplication object
+      const applicationData = { ...newApplication, submitted_at };
+      
+      // Send the POST request to add the job application
+      await axios.post('http://localhost:3002/api/jobApplications', applicationData);
+      
       // Fetch the updated list of job applications after adding a new application
       fetchJobApplications();
+      
+      // Clear the form fields and set the status to 'Applied'
       setNewApplication({ company_name: '', position: '', status: 'Applied', user_id: user ? user.sub : '' });
+      
       console.log('Job application added successfully');
     } catch (error) {
       console.error('Error adding job application:', error);
     }
   };
+  
 
   const handleStatusChange = async (id: number, newStatus: string) => {
     try {
@@ -98,9 +111,6 @@ function App() {
           </Col>
         )}
         <Col md={isAuthenticated ? 10 : 12}>
-          <header>
-            <h1>ApplyD</h1>
-          </header>
           {isAuthenticated && (
             <main>
               <Row>
@@ -144,6 +154,7 @@ function App() {
                             <div>
                               <strong>{application.company_name}</strong> - {application.position} <strong>({application.status})</strong>
                             </div>
+                            <div>{application.submitted_at}</div>
                             <div className='d-flex align-items-center'>
                               {/* Dropdown menu for selecting status */}
                               <Form.Control as="select" value={application.status} onChange={(e) => handleStatusChange(application.id, e.target.value)}>
@@ -155,6 +166,7 @@ function App() {
                               <Button variant="link" onClick={() => handleDelete(application.id)}><FaTrash /></Button>
                             </div>
                           </div>
+                          
                         </ListGroup.Item>
                       ))}
                     </Card.Body>

@@ -19,6 +19,8 @@ const Sidebar = () => {
   };
 
   return (
+    <div>
+    <h1>ApplyD</h1>
     <Navbar expand="lg" className="sidebar">
       <Navbar.Toggle aria-controls="sidebar-nav" />
       <Navbar.Collapse id="sidebar-nav">
@@ -56,6 +58,7 @@ const Sidebar = () => {
         </Nav>
       </Navbar.Collapse>
     </Navbar>
+    </div>
   );
 }
 

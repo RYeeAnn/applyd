@@ -27,7 +27,7 @@ app.post('/api/jobApplications', async (req, res) => {
   const { company_name, position, status, user_id } = req.body; // Extract user_id from request body
   try {
     const result = await client.query(
-      'INSERT INTO job_applications (company_name, position, status, user_id) VALUES ($1, $2, $3, $4) RETURNING *',
+      'INSERT INTO job_applications (company_name, position, status, user_id, submitted_at) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP) RETURNING *',
       [company_name, position, status, user_id] // Include user_id in SQL query
     );
     res.status(201).json(result.rows[0]);
@@ -40,7 +40,7 @@ app.post('/api/jobApplications', async (req, res) => {
 // Route to handle fetching of job applications
 app.get('/api/jobApplications', async (req, res) => {
   try {
-    const result = await client.query('SELECT * FROM job_applications');
+    const result = await client.query('SELECT *, TO_CHAR(submitted_at, \'YYYY-MM-DD HH24:MI:SS\') AS submitted_at FROM job_applications');
     res.status(200).json(result.rows);
   } catch (error) {
     console.error('Error fetching job applications:', error);

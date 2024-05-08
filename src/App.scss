@@ -128,6 +128,12 @@ form {
   color: #dc3545;
 }
 
+// Job Applications
+.job-applications-container {
+  max-height: 302px; /* Adjust the height as per your requirement */
+  overflow-y: auto;
+}
+
 // Footer
 footer {
   text-align: center;

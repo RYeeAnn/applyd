@@ -1,22 +1,11 @@
 import React, { useState, ChangeEvent } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Navbar, Nav, Dropdown, Button, Form, FormControl } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faUser, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
-  const [searchKeyword, setSearchKeyword] = useState('');
-
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(event.target.value);
-    // Add functionality here to perform search in the application
-  };
-
-  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Add functionality here to perform search in the application
-  };
 
   return (
     <div>
@@ -41,20 +30,6 @@ const Sidebar = () => {
               Login
             </Button>
           )}
-          <Form className="w-100 mt-3" onSubmit={handleSearchSubmit}>
-            <div className="input-group">
-              <FormControl
-                type="text"
-                placeholder="Search"
-                value={searchKeyword}
-                onChange={handleSearchChange}
-                aria-label="Search"
-              />
-              <Button variant="outline-secondary" type="submit">
-                <FontAwesomeIcon icon={faSearch} />
-              </Button>
-            </div>
-          </Form>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

@@ -1,5 +1,5 @@
 // App.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import {
   Container,
   Row,
@@ -8,6 +8,7 @@ import {
   Button,
   Card,
   ListGroup,
+  FormControl,
 } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa"; // Import the trash icon
 import "./App.scss";
@@ -15,6 +16,8 @@ import Sidebar from "./components/Sidebar";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import BarChart from "./components/BarChart";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export interface JobApplication {
   id: number;
@@ -34,7 +37,27 @@ function App() {
   });
   const [jobApplications, setJobApplications] = useState<JobApplication[]>([]);
   const [applicationCounts, setApplicationCounts] = useState<number[]>([]); // for chart.js bar graph
+  const [searchKeyword, setSearchKeyword] = useState("");
 
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(event.target.value);
+    // Add functionality here to perform search in the application
+  };
+
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (searchKeyword.trim() === "") {
+      // If search keyword is empty, fetch all job applications again
+      fetchJobApplications();
+    } else {
+      // Filter job applications based on the search keyword
+      const filteredApplications = jobApplications.filter((application) =>
+        application.company_name.toLowerCase().includes(searchKeyword.toLowerCase())
+      );
+      setJobApplications(filteredApplications);
+    }
+  };  
+  
   const fetchJobApplications = async () => {
     try {
       const response = await axios.get<JobApplication[]>(
@@ -212,6 +235,23 @@ function App() {
                     <Card.Body>
                       <Card.Title>My Job Applications</Card.Title>
                       <div className="job-applications-container">
+                        <Form
+                          className="w-100 mt-3"
+                          onSubmit={handleSearchSubmit}
+                        >
+                          <div className="input-group">
+                            <FormControl
+                              type="text"
+                              placeholder="Search"
+                              value={searchKeyword}
+                              onChange={handleSearchChange}
+                              aria-label="Search"
+                            />
+                            <Button variant="outline-secondary" type="submit">
+                              <FontAwesomeIcon icon={faSearch} />
+                            </Button>
+                          </div>
+                        </Form>
                         <ListGroup>
                           {jobApplications.map((application) => (
                             <ListGroup.Item key={application.id}>
@@ -259,7 +299,7 @@ function App() {
           )}
 
           <Row>
-            <Col md={6}>
+            <Col md={12}>
               <Card>
                 <Card.Body>
                   <Card.Title>Application History</Card.Title>
